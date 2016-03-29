@@ -14,6 +14,9 @@
 	$ sudo mv /var/www/html/openid/config.php.ini /var/www/html/openid/config.php
 
 *Change file configs in /var/www/html/openid/config.php*
+*Where*
+*'client' is Service Provider*
+*'issuer' - is your account server*
 
 # Create database 
 
@@ -33,14 +36,14 @@ Or look here:
 
 	https://github.com/dsquier/oauth2-server-php-mysql/blob/master/oauth.ddl
 
-# Generate pem files
+# Generate keys
 
-## private key
+## Private key
 
 	$ cd ~
 	$ openssl genrsa -out privkey.pem 2048
 
-## public key
+## Public key
 
 	$ cd ~
 	$ openssl rsa -in privkey.pem -pubout -out pubkey.pem
@@ -57,7 +60,7 @@ Or look here:
 	
 	$ mysql -u oauth2_user -p oauth2
 
-	> INSERT INTO oauth_clients(client_id, client_secret, redirect_uri) VALUES('831438', 'ebb5f447aa497482fcc79f8cbcdffbb1', 'http://client_host/svcauth/bycode')
+	> INSERT INTO oauth_clients(client_id, client_secret, redirect_uri) VALUES('831438', 'ebb5f447aa497482fcc79f8cbcdffbb1', 'http://service_provider/svcauth/bycode')
 	> INSERT INTO oauth_public_keys(client_id, encryption_algorithm) VALUES('831439', 'RS256');
 	> UPDATE oauth_public_keys SET public_key = LOAD_FILE('where_are_your_keys/pubkey.pem') WHERE client_id = '831438';
 	> UPDATE oauth_public_keys SET private_key = LOAD_FILE('where_are_your_keys/privkey.pem') WHERE client_id = '831438';
@@ -66,4 +69,12 @@ Or look here:
 
 http://you_host/openid/
 
+# What need to Service Provider?
 
+* Your client_id
+* Your client_secret
+* Your issuer (for example: http://myaccountserver.com/openid)
+* Link to openid/jwks: http://myaccountserver.com/openid/jwks.php
+* Link to openid/token: http://myaccountserver.com/openid/token.php
+* Link to openid/authorize: http://myaccountserver.com/openid/authorize.php
+* Link to openid/userinfo: http://myaccountserver.com/openid/userinfo.php

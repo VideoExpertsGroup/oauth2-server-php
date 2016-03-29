@@ -57,12 +57,20 @@ class IdToken implements IdTokenInterface
 
         $token = array(
             'iss'        => $this->config['issuer'],
-            'sub'        => $user_id,
+            'sub'        => $user_id == null ? 'test' : $user_id,
             'aud'        => $client_id,
             'iat'        => time(),
             'exp'        => time() + $this->config['id_lifetime'],
             'auth_time'  => $auth_time,
         );
+
+	$token['svc_access'] = array(
+		'account' => 'test',
+		'acl' => array(
+			array( "S" => "Camera", "F" => array("6DD9412E4549"), "O"=> "Clip", "P" => array("Play")),
+			array( "S" => "Camera", "F" => array("6DD9412E4549"), "O"=> "Camera", "P" => array("Play")),
+		),
+	);
 
         if ($nonce) {
             $token['nonce'] = $nonce;

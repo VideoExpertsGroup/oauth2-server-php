@@ -74,6 +74,7 @@ http://you_host/openid/
 * Your client_id
 * Your client_secret
 * Your issuer (for example: http://myaccountserver.com/openid)
+* Your vendor
 * Link to openid/jwks: http://myaccountserver.com/openid/jwks.php
 * Link to openid/token: http://myaccountserver.com/openid/token.php
 * Link to openid/authorize: http://myaccountserver.com/openid/authorize.php

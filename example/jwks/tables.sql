@@ -11,10 +11,10 @@
 	  authorization_code   VARCHAR(40)    NOT NULL COMMENT 'System generated authorization code',
 	  client_id            VARCHAR(80)             COMMENT 'OAUTH_CLIENTS.CLIENT_ID',
 	  user_id              VARCHAR(80)             COMMENT 'OAUTH_USERS.USER_ID',
-	  redirect_uri         VARCHAR(2000)  NOT NULL COMMENT 'URI to redirect user after authorization',
+	  redirect_uri         VARCHAR(2000)           COMMENT 'URI to redirect user after authorization',
 	  expires              TIMESTAMP      NOT NULL COMMENT 'When the code becomes invalid',
 	  scope                VARCHAR(4000)           COMMENT 'Space-delimited list scopes code can request',
-	  id_token             VARCHAR(1000)           COMMENT 'JSON web token used for OpenID Connect',
+	  id_token             TEXT                    COMMENT 'JSON web token used for OpenID Connect',
 	  PRIMARY KEY (authorization_code)
 	);
 

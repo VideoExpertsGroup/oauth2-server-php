@@ -74,7 +74,7 @@ class Server implements ResourceControllerInterface,
         'user_claims' => 'OAuth2\OpenID\Storage\UserClaimsInterface',
         'public_key' => 'OAuth2\Storage\PublicKeyInterface',
         'jwt_bearer' => 'OAuth2\Storage\JWTBearerInterface',
-        'scope' => 'OAuth2\Storage\ScopeInterface',
+        'scope' => 'OAuth2\Storage\ScopeInterface'
     );
 
     protected $responseTypeMap = array(
@@ -315,10 +315,10 @@ class Server implements ResourceControllerInterface,
      *
      * @ingroup oauth2_section_4
      */
-    public function handleAuthorizeRequest(RequestInterface $request, ResponseInterface $response, $is_authorized, $user_id = null)
+    public function handleAuthorizeRequest(RequestInterface $request, ResponseInterface $response, $is_authorized, $user_id = null, $extendIdToken = null)
     {
         $this->response = $response;
-        $this->getAuthorizeController()->handleAuthorizeRequest($request, $this->response, $is_authorized, $user_id);
+        $this->getAuthorizeController()->handleAuthorizeRequest($request, $this->response, $is_authorized, $user_id, $extendIdToken);
 
         return $this->response;
     }

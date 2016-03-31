@@ -56,7 +56,7 @@ class AuthorizeController implements AuthorizeControllerInterface
         $this->scopeUtil = $scopeUtil;
     }
 
-    public function handleAuthorizeRequest(RequestInterface $request, ResponseInterface $response, $is_authorized, $user_id = null)
+    public function handleAuthorizeRequest(RequestInterface $request, ResponseInterface $response, $is_authorized, $user_id = null, $extendIdToken = null)
     {
         if (!is_bool($is_authorized)) {
             throw new \InvalidArgumentException('Argument "is_authorized" must be a boolean.  This method must know if the user has granted access to the client.');
@@ -78,12 +78,11 @@ class AuthorizeController implements AuthorizeControllerInterface
         if ($is_authorized === false) {
             $redirect_uri = $this->redirect_uri ?: $registered_redirect_uri;
             $this->setNotAuthorizedResponse($request, $response, $redirect_uri, $user_id);
-
             return;
         }
 
         // build the parameters to set in the redirect URI
-        if (!$params = $this->buildAuthorizeParameters($request, $response, $user_id)) {
+        if (!$params = $this->buildAuthorizeParameters($request, $response, $user_id, $extendIdToken)) {
             return;
         }
 

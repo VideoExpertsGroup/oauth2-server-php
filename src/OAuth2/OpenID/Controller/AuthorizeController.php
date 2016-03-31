@@ -32,15 +32,15 @@ class AuthorizeController extends BaseAuthorizeController implements AuthorizeCo
         $response->setRedirect($this->config['redirect_status_code'], $redirect_uri, $this->getState(), $error, $error_message);
     }
 
-    protected function buildAuthorizeParameters($request, $response, $user_id)
+    protected function buildAuthorizeParameters($request, $response, $user_id, $extendIdToken = null)
     {
-        if (!$params = parent::buildAuthorizeParameters($request, $response, $user_id)) {
+        if (!$params = parent::buildAuthorizeParameters($request, $response, $user_id, $extendIdToken)) {
             return;
         }
 
         // Generate an id token if needed.
         if ($this->needsIdToken($this->getScope()) && $this->getResponseType() == self::RESPONSE_TYPE_AUTHORIZATION_CODE) {
-            $params['id_token'] = $this->responseTypes['id_token']->createIdToken($this->getClientId(), $user_id, $this->nonce);
+            $params['id_token'] = $this->responseTypes['id_token']->createIdToken($this->getClientId(), $user_id, $this->nonce, null, null, $extendIdToken);
         }
 
         // add the nonce to return with the redirect URI

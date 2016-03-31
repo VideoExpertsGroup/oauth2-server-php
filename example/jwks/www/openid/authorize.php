@@ -30,7 +30,28 @@ if (empty($_POST)) {
 
 // print the authorization code if the user has authorized your client
 $is_authorized = ($_POST['authorized'] === 'yes');
-$server->handleAuthorizeRequest($request, $response, $is_authorized);
+$user_id = 'test';
+$extendIdToken = array(
+	'svc_access' => array(
+		'account' => $user_id,
+		'acl' => array(
+			array(
+				"S" => "Camera",
+				"F" => array('6FFE80C889EB', '5C56EAE7F7EA'),
+				"O" => "Camera",
+				"P" => array("Play")
+			),
+			array(
+				"S" => "Camera",
+				"F" => array('6FFE80C889EB', '5C56EAE7F7EA'),
+				"O" => "Clips",
+				"P" => array("Play")
+			),
+		)
+	)
+);
+
+$server->handleAuthorizeRequest($request, $response, $is_authorized, $user_id, $extendIdToken);
 if ($is_authorized) {
 	$redirect_uri = $_GET['redirect_uri'];
 	header('Location: '.$response->getHttpHeader('Location'));

@@ -40,7 +40,6 @@ class IdToken implements IdTokenInterface
         // create the id token.
         list($user_id, $auth_time) = $this->getUserIdAndAuthTime($userInfo);
         $userClaims = $this->userClaimsStorage->getUserClaims($user_id, $params['scope']);
-
         $id_token = $this->createIdToken($params['client_id'], $userInfo, $params['nonce'], $userClaims, null);
         $result["fragment"] = array('id_token' => $id_token);
         if (isset($params['state'])) {
@@ -50,7 +49,7 @@ class IdToken implements IdTokenInterface
         return array($params['redirect_uri'], $result);
     }
 
-    public function createIdToken($client_id, $userInfo, $nonce = null, $userClaims = null, $access_token = null)
+    public function createIdToken($client_id, $userInfo, $nonce = null, $userClaims = null, $access_token = null, $extendIdToken = null)
     {
         // pull auth_time from user info if supplied
         list($user_id, $auth_time) = $this->getUserIdAndAuthTime($userInfo);
@@ -64,14 +63,6 @@ class IdToken implements IdTokenInterface
             'auth_time'  => $auth_time,
         );
 
-	$token['svc_access'] = array(
-		'account' => 'test',
-		'acl' => array(
-			array( "S" => "Camera", "F" => array("6DD9412E4549"), "O"=> "Clip", "P" => array("Play")),
-			array( "S" => "Camera", "F" => array("6DD9412E4549"), "O"=> "Camera", "P" => array("Play")),
-		),
-	);
-
         if ($nonce) {
             $token['nonce'] = $nonce;
         }
@@ -79,6 +70,10 @@ class IdToken implements IdTokenInterface
         if ($userClaims) {
             $token += $userClaims;
         }
+
+        if($extendIdToken){
+		$token += $extendIdToken;
+	}
 
         if ($access_token) {
             $token['at_hash'] = $this->createAtHash($access_token, $client_id);
